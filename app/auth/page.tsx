@@ -1,7 +1,9 @@
 "use client"
 
 import * as React from "react"
-import { ArrowRight, Eye, EyeOff, Loader2, Star } from "lucide-react"
+import Link from "next/link"
+import { useSearchParams } from "next/navigation"
+import { ArrowLeft, ArrowRight, Eye, EyeOff, Loader2, Star } from "lucide-react"
 
 import { getApiErrorDetail } from "@/lib/apiClient"
 import { useLogin, useRegister } from "@/hooks/useAuth"
@@ -11,8 +13,11 @@ type Mode = "login" | "register"
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-export default function AuthPage() {
-  const [mode, setMode] = React.useState<Mode>("login")
+function AuthCard() {
+  const searchParams = useSearchParams()
+  const [mode, setMode] = React.useState<Mode>(
+    searchParams.get("mode") === "register" ? "register" : "login",
+  )
   const [name, setName] = React.useState("")
   const [email, setEmail] = React.useState("")
   const [password, setPassword] = React.useState("")
@@ -66,15 +71,24 @@ export default function AuthPage() {
 
   return (
     <main className="relative flex min-h-svh items-center justify-center overflow-hidden bg-slate-50 p-6 dark:bg-slate-950">
+      <Link
+        href="/"
+        className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-slate-500 transition-colors hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400 sm:left-6 sm:top-6"
+      >
+        <ArrowLeft className="size-4" />
+        Back to home
+      </Link>
       <div className="pointer-events-none absolute -top-40 left-1/2 size-160 -translate-x-1/2 rounded-full bg-indigo-500/10 blur-3xl" />
 
       <div className="relative w-full max-w-md">
         <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-900/5 dark:border-slate-800 dark:bg-slate-900 sm:p-10">
           <div className="mb-8 flex flex-col items-center text-center">
-            <div className="mb-4 flex size-11 items-center justify-center rounded-2xl bg-indigo-600 text-white shadow-lg shadow-indigo-600/30">
-              <Star className="size-6 fill-current" />
-            </div>
-            <span className="text-lg font-semibold tracking-tight">ReviewDibo</span>
+            <Link href="/" className="flex flex-col items-center transition-opacity hover:opacity-80">
+              <div className="mb-4 flex size-11 items-center justify-center rounded-2xl bg-indigo-600 text-white shadow-lg shadow-indigo-600/30">
+                <Star className="size-6 fill-current" />
+              </div>
+              <span className="text-lg font-semibold tracking-tight">ReviewDibo</span>
+            </Link>
             <h1 className="mt-4 text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-50">
               {isLogin ? "Welcome back" : "Create your account"}
             </h1>
@@ -277,5 +291,13 @@ function Field({
         </p>
       )}
     </div>
+  )
+}
+
+export default function AuthPage() {
+  return (
+    <React.Suspense fallback={null}>
+      <AuthCard />
+    </React.Suspense>
   )
 }

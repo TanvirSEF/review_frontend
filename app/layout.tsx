@@ -4,6 +4,7 @@ import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { QueryProvider } from "@/components/query-provider"
 import { AuthProvider } from "@/components/auth-provider"
+import { Navbar } from "@/components/navbar"
 import { cn } from "@/lib/utils";
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans'})
@@ -27,7 +28,10 @@ export default function RootLayout({
       <body suppressHydrationWarning>
         <QueryProvider>
           <AuthProvider>
-            <ThemeProvider>{children}</ThemeProvider>
+            <ThemeProvider>
+              <Navbar />
+              {children}
+            </ThemeProvider>
           </AuthProvider>
         </QueryProvider>
       </body>
