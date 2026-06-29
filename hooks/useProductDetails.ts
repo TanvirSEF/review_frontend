@@ -8,7 +8,6 @@ export interface Review {
   rating: number
   comment: string | null
   created_at: string
-  /** Reviewer's display name (already a string from the backend). */
   user: string
 }
 
@@ -17,7 +16,6 @@ export interface ProductDetail {
   title: string
   description: string | null
   image_url: string | null
-  /** Newest first (pre-sorted by the backend). */
   reviews: Review[]
 }
 
@@ -45,11 +43,6 @@ export function useProductDetail(id: number) {
   })
 }
 
-/**
- * Create a review, then invalidate the product detail + list caches so the
- * review timeline and rating averages refetch reactively in the background —
- * no page reload.
- */
 export function useCreateReview() {
   const queryClient = useQueryClient()
 

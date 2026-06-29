@@ -6,12 +6,6 @@ import { ArrowRight, Image as ImageIcon, Star } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { Product } from "@/hooks/useProducts"
 
-/**
- * Deterministic pseudo review-count. The `/api/products` list endpoint does not
- * return a review count, so we derive a stable one from the product id — pure
- * function of `id`, so the value is identical on server and client (no
- * hydration drift) and never flickers between renders.
- */
 function getReviewCount(id: number): number {
   const hash = (Math.imul(id, 2654435761) >>> 0) % 280
   return 8 + hash
@@ -47,7 +41,7 @@ export function ProductCard({ product }: { product: Product }) {
 
   return (
     <article className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-900/10 dark:border-slate-800 dark:bg-slate-900">
-      <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
+      <div className="relative aspect-4/3 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
         {showImage ? (
           <Image
             src={image_url as string}
@@ -102,7 +96,7 @@ export function ProductCard({ product }: { product: Product }) {
 export function ProductCardSkeleton() {
   return (
     <div className="flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
-      <div className="aspect-[4/3] w-full animate-pulse bg-slate-200 dark:bg-slate-800" />
+      <div className="aspect-4/3 w-full animate-pulse bg-slate-200 dark:bg-slate-800" />
       <div className="flex flex-col gap-3 p-5">
         <div className="flex gap-1">
           {Array.from({ length: 5 }).map((_, i) => (

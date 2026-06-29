@@ -12,9 +12,6 @@ import { cn } from "@/lib/utils"
 export function ReviewForm({ product_id }: { product_id: number }) {
   const { isAuthenticated, isReady } = useAuth()
 
-  // Auth state hydrates after mount (SSR-safe). Until then render a neutral
-  // placeholder so we never flash the wrong state (e.g. a "sign in" prompt to
-  // a logged-in user).
   if (!isReady) return <ReviewFormSkeleton />
 
   if (!isAuthenticated) return <SignInPrompt />
@@ -147,7 +144,6 @@ function ReviewFormBody({ product_id }: { product_id: number }) {
 function SignInPrompt() {
   return (
     <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
-      {/* Faux, blurred form behind the overlay */}
       <div className="pointer-events-none select-none blur-sm opacity-60">
         <div className="flex gap-1">
           {Array.from({ length: 5 }).map((_, i) => (

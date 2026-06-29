@@ -49,8 +49,6 @@ export function useRegister() {
   return useMutation<AuthSession, Error, RegisterInput>({
     mutationKey: ["auth", "register"],
     mutationFn: async (input) => {
-      // POST /api/users returns the created User but no token, so chain a
-      // login to obtain the JWT. The session user is the full register payload.
       const created = await registerUser(input)
       const { access_token } = await loginUser({
         email: input.email,
@@ -66,18 +64,12 @@ export function useRegister() {
   })
 }
 
-/**
- * Synchronous logout controller: purge localStorage auth entries, invalidate
- * all query state (so user-scoped data refetches as anonymous), and notify the
- * AuthProvider so global state resets immediately.
- */
 export function logout(): void {
   clearSession()
   getQueryClient().invalidateQueries()
   notifyAuth()
 }
 
-/** Global auth state consumer (isAuthenticated / user / isReady). */
 export function useAuth() {
   return useAuthContext()
 }
