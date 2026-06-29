@@ -1,15 +1,22 @@
 "use client"
 
-import { PackageSearch, RefreshCw } from "lucide-react"
+import * as React from "react"
+import { PackageSearch, Plus, RefreshCw } from "lucide-react"
 
+import { AddProductDialog } from "@/components/add-product-dialog"
 import { ProductCard, ProductCardSkeleton } from "@/components/ProductCard"
 import { getApiErrorDetail } from "@/lib/apiClient"
+import { useAuth } from "@/hooks/useAuth"
 import { useProducts } from "@/hooks/useProducts"
 
 const SKELETON_COUNT = 6
 
 export default function HomePage() {
   const { data: products, isLoading, isError, error, refetch } = useProducts()
+  const { user, isReady } = useAuth()
+  const [dialogOpen, setDialogOpen] = React.useState(false)
+
+  const isAdmin = isReady && !!user?.is_admin
 
   return (
     <main className="min-h-svh bg-slate-50 dark:bg-slate-950">
@@ -26,6 +33,17 @@ export default function HomePage() {
             Browse honest, community-driven ratings before you buy. Real opinions,
             honest scores, and detailed breakdowns for every product.
           </p>
+
+          {isAdmin && (
+            <button
+              type="button"
+              onClick={() => setDialogOpen(true)}
+              className="mt-6 inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-indigo-600/25 transition-colors hover:bg-indigo-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600/40 focus-visible:ring-offset-2"
+            >
+              <Plus className="size-4" />
+              Add product
+            </button>
+          )}
         </div>
       </section>
 
@@ -69,7 +87,9 @@ export default function HomePage() {
               No products yet
             </p>
             <p className="text-sm text-slate-500 dark:text-slate-400">
-              Check back soon — new reviews are on the way.
+              {isAdmin
+                ? "Add the first product to get started."
+                : "Check back soon — new reviews are on the way."}
             </p>
           </div>
         )}
@@ -78,6 +98,8 @@ export default function HomePage() {
           !isError &&
           products?.map((product) => <ProductCard key={product.id} product={product} />)}
       </div>
+
+      {dialogOpen && <AddProductDialog onClose={() => setDialogOpen(false)} />}
     </main>
   )
 }

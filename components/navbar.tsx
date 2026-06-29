@@ -28,8 +28,13 @@ export function Navbar() {
         <div className="flex items-center gap-2">
           {isAuthenticated ? (
             <>
-              <span className="hidden text-sm text-slate-500 sm:inline dark:text-slate-400">
+              <span className="hidden items-center gap-2 text-sm text-slate-500 sm:inline-flex dark:text-slate-400">
                 Hi, {user?.name?.trim() || "there"}
+                {user?.is_admin && (
+                  <span className="inline-flex items-center rounded-full bg-indigo-50 px-2 py-0.5 text-xs font-semibold text-indigo-700 ring-1 ring-indigo-200 dark:bg-indigo-950/50 dark:text-indigo-300 dark:ring-indigo-900/50">
+                    Admin
+                  </span>
+                )}
               </span>
               <button
                 type="button"

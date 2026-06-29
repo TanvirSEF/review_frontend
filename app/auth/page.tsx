@@ -40,7 +40,7 @@ function AuthCard() {
     email: !email ? "Email is required" : !EMAIL_RE.test(email) ? "Enter a valid email" : null,
     password: !password
       ? "Password is required"
-      : password.length < 8
+      : !isLogin && password.length < 8
         ? "Use at least 8 characters"
         : null,
   }

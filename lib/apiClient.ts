@@ -8,6 +8,7 @@ export interface User {
   id: number
   name: string
   email: string
+  is_admin?: boolean
   created_at?: string
 }
 
@@ -61,9 +62,20 @@ export async function loginUser(input: LoginInput): Promise<TokenResponse> {
   return data
 }
 
+export interface CreateProductInput {
+  title: string
+  description?: string
+  image_url?: string
+}
+
+export async function createProduct(input: CreateProductInput): Promise<void> {
+  await apiClient.post("/api/products", input)
+}
+
 interface JwtPayload {
   sub?: string
   exp?: number
+  is_admin?: boolean
 }
 
 export function decodeJwt(token: string): JwtPayload | null {

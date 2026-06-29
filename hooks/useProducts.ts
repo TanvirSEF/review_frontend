@@ -1,6 +1,6 @@
-import { useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
-import { apiClient } from "@/lib/apiClient"
+import { apiClient, createProduct, type CreateProductInput } from "@/lib/apiClient"
 
 export interface Product {
   id: number
@@ -19,5 +19,15 @@ export function useProducts() {
   return useQuery({
     queryKey: ["products"],
     queryFn: fetchProducts,
+  })
+}
+
+export function useCreateProduct() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (input: CreateProductInput) => createProduct(input),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["products"] })
+    },
   })
 }

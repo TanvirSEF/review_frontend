@@ -23,6 +23,7 @@ function userFromToken(token: string): User {
     id: Number.isNaN(id) ? 0 : id,
     name: "",
     email: "",
+    is_admin: Boolean(payload?.is_admin),
   }
 }
 
