@@ -6,11 +6,6 @@ import { ArrowRight, Image as ImageIcon, Star } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { Product } from "@/hooks/useProducts"
 
-function getReviewCount(id: number): number {
-  const hash = (Math.imul(id, 2654435761) >>> 0) % 280
-  return 8 + hash
-}
-
 function RatingStars({ rating }: { rating: number }) {
   const filled = Math.min(5, Math.max(0, Math.round(rating)))
   return (
@@ -34,10 +29,9 @@ function RatingStars({ rating }: { rating: number }) {
 }
 
 export function ProductCard({ product }: { product: Product }) {
-  const { id, title, description, image_url, average_rating } = product
+  const { id, title, description, image_url, average_rating, review_count } = product
   const [imgError, setImgError] = React.useState(false)
   const showImage = Boolean(image_url) && !imgError
-  const reviewCount = getReviewCount(id)
 
   return (
     <article className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-900/10 dark:border-slate-800 dark:bg-slate-900">
@@ -76,7 +70,7 @@ export function ProductCard({ product }: { product: Product }) {
         </p>
 
         <p className="mt-2 text-xs font-medium text-slate-400">
-          {reviewCount} {reviewCount === 1 ? "Review" : "Reviews"}
+          {review_count} {review_count === 1 ? "Review" : "Reviews"}
         </p>
 
         <div className="mt-4">

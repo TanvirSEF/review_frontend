@@ -8,6 +8,7 @@ export interface Product {
   description: string | null
   image_url: string | null
   average_rating: number
+  review_count: number
 }
 
 export async function fetchProducts(): Promise<Product[]> {
