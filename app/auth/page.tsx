@@ -38,11 +38,7 @@ function AuthCard() {
   const errors = {
     name: isLogin ? null : name.trim().length < 2 ? "Enter your name" : null,
     email: !email ? "Email is required" : !EMAIL_RE.test(email) ? "Enter a valid email" : null,
-    password: !password
-      ? "Password is required"
-      : !isLogin && password.length < 8
-        ? "Use at least 8 characters"
-        : null,
+    password: !password ? "Password is required" : null,
   }
 
   function fieldError(key: keyof typeof errors): string | null {
