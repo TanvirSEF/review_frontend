@@ -66,7 +66,7 @@ export default function AuthPage() {
 
   return (
     <main className="relative flex min-h-svh items-center justify-center overflow-hidden bg-slate-50 p-6 dark:bg-slate-950">
-      <div className="pointer-events-none absolute -top-40 left-1/2 size-[40rem] -translate-x-1/2 rounded-full bg-indigo-500/10 blur-3xl" />
+      <div className="pointer-events-none absolute -top-40 left-1/2 size-160 -translate-x-1/2 rounded-full bg-indigo-500/10 blur-3xl" />
 
       <div className="relative w-full max-w-md">
         <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-900/5 dark:border-slate-800 dark:bg-slate-900 sm:p-10">
