@@ -49,7 +49,9 @@ export function useCreateReview() {
   return useMutation({
     mutationFn: (input: CreateReviewInput) => createReview(input),
     onSuccess: (_review, variables) => {
-      queryClient.invalidateQueries({ queryKey: ["products", variables.product_id] })
+      queryClient.invalidateQueries({
+        queryKey: ["products", variables.product_id],
+      })
       queryClient.invalidateQueries({ queryKey: ["products"] })
     },
   })

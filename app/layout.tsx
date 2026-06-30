@@ -1,13 +1,19 @@
-import { Geist_Mono, Inter } from "next/font/google"
+import { Fraunces, Geist_Mono, Inter } from "next/font/google"
 
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { QueryProvider } from "@/components/query-provider"
 import { AuthProvider } from "@/components/auth-provider"
 import { Navbar } from "@/components/navbar"
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
 
-const inter = Inter({subsets:['latin'],variable:'--font-sans'})
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
+
+const fontSerif = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-serif",
+  display: "swap",
+})
 
 const fontMono = Geist_Mono({
   subsets: ["latin"],
@@ -23,7 +29,13 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn("antialiased", fontMono.variable, "font-sans", inter.variable)}
+      className={cn(
+        "antialiased",
+        fontMono.variable,
+        fontSerif.variable,
+        "font-sans",
+        inter.variable
+      )}
     >
       <body suppressHydrationWarning>
         <QueryProvider>

@@ -14,13 +14,13 @@ export function Navbar() {
   if (pathname === "/auth") return null
 
   return (
-    <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/80 backdrop-blur dark:border-slate-800 dark:bg-slate-950/80">
+    <header className="sticky top-0 z-40 border-b border-stone-200/80 bg-white/80 backdrop-blur-md dark:border-stone-800/80 dark:bg-stone-950/80">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="flex size-8 items-center justify-center rounded-lg bg-indigo-600 text-white">
-            <Star className="size-5 fill-current" />
+        <Link href="/" className="flex items-center gap-2.5">
+          <span className="flex size-8 items-center justify-center rounded-lg bg-stone-900 dark:bg-white">
+            <Star className="size-4 fill-amber-400 text-amber-400" />
           </span>
-          <span className="font-semibold tracking-tight text-slate-900 dark:text-slate-50">
+          <span className="font-heading text-lg font-medium tracking-tight text-stone-900 dark:text-stone-50">
             ReviewDibo
           </span>
         </Link>
@@ -28,10 +28,10 @@ export function Navbar() {
         <div className="flex items-center gap-2">
           {isAuthenticated ? (
             <>
-              <span className="hidden items-center gap-2 text-sm text-slate-500 sm:inline-flex dark:text-slate-400">
+              <span className="hidden items-center gap-2 text-sm text-stone-500 sm:inline-flex dark:text-stone-400">
                 Hi, {user?.name?.trim() || "there"}
                 {user?.is_admin && (
-                  <span className="inline-flex items-center rounded-full bg-indigo-50 px-2 py-0.5 text-xs font-semibold text-indigo-700 ring-1 ring-indigo-200 dark:bg-indigo-950/50 dark:text-indigo-300 dark:ring-indigo-900/50">
+                  <span className="inline-flex items-center rounded-full bg-amber-50 px-2 py-0.5 text-xs font-semibold text-amber-700 ring-1 ring-amber-200 dark:bg-amber-950/40 dark:text-amber-300 dark:ring-amber-900/50">
                     Admin
                   </span>
                 )}
@@ -39,7 +39,7 @@ export function Navbar() {
               <button
                 type="button"
                 onClick={() => logout()}
-                className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-sm font-medium text-stone-700 transition-colors hover:bg-stone-100 dark:border-stone-700 dark:bg-stone-900 dark:text-stone-200 dark:hover:bg-stone-800"
               >
                 <LogOut className="size-4" />
                 Log out
@@ -49,13 +49,13 @@ export function Navbar() {
             <>
               <Link
                 href="/auth"
-                className="rounded-lg px-3 py-1.5 text-sm font-medium text-slate-600 transition-colors hover:text-indigo-600 dark:text-slate-300 dark:hover:text-indigo-400"
+                className="rounded-lg px-3 py-1.5 text-sm font-medium text-stone-600 transition-colors hover:text-stone-900 dark:text-stone-300 dark:hover:text-stone-50"
               >
                 Log in
               </Link>
               <Link
                 href="/auth?mode=register"
-                className="inline-flex items-center rounded-lg bg-indigo-600 px-4 py-1.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-indigo-500"
+                className="inline-flex items-center rounded-lg bg-stone-900 px-4 py-1.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-stone-800 dark:bg-white dark:text-stone-900 dark:hover:bg-stone-200"
               >
                 Sign up
               </Link>

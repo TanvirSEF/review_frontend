@@ -54,7 +54,11 @@ export function notifyAuth(): void {
 const AuthContext = React.createContext<AuthState>(SERVER_STATE)
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const state = React.useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
+  const state = React.useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot
+  )
   const value = React.useMemo(() => state, [state])
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

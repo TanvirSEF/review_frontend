@@ -56,9 +56,13 @@ export async function loginUser(input: LoginInput): Promise<TokenResponse> {
   const form = new URLSearchParams()
   form.set("username", input.email)
   form.set("password", input.password)
-  const { data } = await apiClient.post<TokenResponse>("/api/auth/login", form.toString(), {
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-  })
+  const { data } = await apiClient.post<TokenResponse>(
+    "/api/auth/login",
+    form.toString(),
+    {
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    }
+  )
   return data
 }
 
@@ -87,7 +91,7 @@ export function decodeJwt(token: string): JwtPayload | null {
       atob(base64)
         .split("")
         .map((c) => `%${`00${c.charCodeAt(0).toString(16)}`.slice(-2)}`)
-        .join(""),
+        .join("")
     )
     return JSON.parse(json) as JwtPayload
   } catch {
@@ -97,10 +101,13 @@ export function decodeJwt(token: string): JwtPayload | null {
 
 export function getApiErrorDetail(error: unknown): string {
   if (error instanceof AxiosError) {
-    const detail = (error.response?.data as { detail?: unknown } | undefined)?.detail
+    const detail = (error.response?.data as { detail?: unknown } | undefined)
+      ?.detail
     if (typeof detail === "string") return detail
     if (Array.isArray(detail)) {
-      const msgs = detail.map((d) => (d as { msg?: string })?.msg).filter(Boolean)
+      const msgs = detail
+        .map((d) => (d as { msg?: string })?.msg)
+        .filter(Boolean)
       if (msgs.length) return msgs.join(", ")
     }
     if (error.code === "ERR_NETWORK") {

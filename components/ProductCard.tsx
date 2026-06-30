@@ -6,21 +6,27 @@ import { ArrowRight, Image as ImageIcon, Star } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { Product } from "@/hooks/useProducts"
 
-function RatingStars({ rating }: { rating: number }) {
+function RatingStars({
+  rating,
+  className,
+}: {
+  rating: number
+  className?: string
+}) {
   const filled = Math.min(5, Math.max(0, Math.round(rating)))
   return (
     <div
-      className="flex items-center gap-0.5"
+      className={cn("flex items-center gap-0.5", className)}
       aria-label={`Rated ${rating.toFixed(1)} out of 5`}
     >
       {Array.from({ length: 5 }).map((_, i) => (
         <Star
           key={i}
           className={cn(
-            "size-4",
+            "size-3.5",
             i < filled
               ? "fill-amber-400 text-amber-400"
-              : "fill-slate-200 text-slate-200 dark:fill-slate-700 dark:text-slate-700",
+              : "fill-stone-200 text-stone-200 dark:fill-stone-700 dark:text-stone-700"
           )}
         />
       ))}
@@ -28,14 +34,25 @@ function RatingStars({ rating }: { rating: number }) {
   )
 }
 
-export function ProductCard({ product }: { product: Product }) {
-  const { id, title, description, image_url, average_rating, review_count } = product
+export function ProductCard({
+  product,
+  index = 0,
+}: {
+  product: Product
+  index?: number
+}) {
+  const { id, title, description, image_url, average_rating, review_count } =
+    product
   const [imgError, setImgError] = React.useState(false)
   const showImage = Boolean(image_url) && !imgError
 
   return (
-    <article className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-900/10 dark:border-slate-800 dark:bg-slate-900">
-      <div className="relative aspect-4/3 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
+    <Link
+      href={`/products/${id}`}
+      style={{ animationDelay: `${Math.min(index, 8) * 60}ms` }}
+      className="group animate-fade-up flex flex-col overflow-hidden rounded-2xl border border-stone-200/80 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-stone-300 hover:shadow-xl hover:shadow-stone-900/5 focus-visible:ring-2 focus-visible:ring-stone-900/15 focus-visible:ring-offset-2 focus-visible:outline-none dark:border-stone-800 dark:bg-stone-900 dark:hover:border-stone-700 dark:focus-visible:ring-white/20"
+    >
+      <div className="relative aspect-4/3 w-full overflow-hidden bg-stone-100 dark:bg-stone-800">
         {showImage ? (
           <Image
             src={image_url as string}
@@ -43,67 +60,64 @@ export function ProductCard({ product }: { product: Product }) {
             fill
             unoptimized
             sizes="(max-width: 768px) 100vw, 33vw"
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
             onError={() => setImgError(true)}
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-700">
-            <ImageIcon className="size-12 text-slate-300 dark:text-slate-600" />
+          <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-stone-100 to-stone-200 dark:from-stone-800 dark:to-stone-700">
+            <ImageIcon className="size-12 text-stone-300 dark:text-stone-600" />
           </div>
         )}
-
-        <div className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-white/95 px-2.5 py-1 text-xs font-semibold text-amber-700 shadow-sm ring-1 ring-amber-200 backdrop-blur dark:bg-slate-900/90 dark:text-amber-400 dark:ring-amber-900/50">
-          <Star className="size-3 fill-amber-400 text-amber-400" />
-          {average_rating.toFixed(1)}
-        </div>
       </div>
 
       <div className="flex flex-1 flex-col p-5">
-        <RatingStars rating={average_rating} />
+        <div className="flex items-center gap-2">
+          <RatingStars rating={average_rating} />
+          <span className="text-sm font-semibold text-stone-900 dark:text-stone-50">
+            {average_rating.toFixed(1)}
+          </span>
+        </div>
 
-        <h3 className="mt-2 line-clamp-1 text-base font-semibold text-slate-900 dark:text-slate-50">
+        <h3 className="mt-2.5 line-clamp-1 text-base font-semibold text-stone-900 dark:text-stone-50">
           {title}
         </h3>
 
-        <p className="mt-1 line-clamp-2 text-sm text-slate-500 dark:text-slate-400">
+        <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-stone-500 dark:text-stone-400">
           {description?.trim() || "No description available."}
         </p>
 
-        <p className="mt-2 text-xs font-medium text-slate-400">
-          {review_count} {review_count === 1 ? "Review" : "Reviews"}
-        </p>
-
-        <div className="mt-4">
-          <Link
-            href={`/products/${id}`}
-            className="group/btn inline-flex w-full items-center justify-center gap-1.5 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-indigo-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600/40 focus-visible:ring-offset-2"
-          >
-            View Details
-            <ArrowRight className="size-4 transition-transform group-hover/btn:translate-x-0.5" />
-          </Link>
+        <div className="mt-5 flex items-center justify-between border-t border-stone-100 pt-4 dark:border-stone-800">
+          <span className="text-xs font-medium text-stone-400 dark:text-stone-500">
+            {review_count} {review_count === 1 ? "review" : "reviews"}
+          </span>
+          <span className="inline-flex items-center gap-1 text-xs font-semibold text-stone-900 transition-colors group-hover:text-amber-600 dark:text-stone-100 dark:group-hover:text-amber-400">
+            View details
+            <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
+          </span>
         </div>
       </div>
-    </article>
+    </Link>
   )
 }
 
 export function ProductCardSkeleton() {
   return (
-    <div className="flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
-      <div className="aspect-4/3 w-full animate-pulse bg-slate-200 dark:bg-slate-800" />
+    <div className="flex flex-col overflow-hidden rounded-2xl border border-stone-200/80 bg-white dark:border-stone-800 dark:bg-stone-900">
+      <div className="aspect-4/3 w-full animate-pulse bg-stone-200 dark:bg-stone-800" />
       <div className="flex flex-col gap-3 p-5">
         <div className="flex gap-1">
           {Array.from({ length: 5 }).map((_, i) => (
             <div
               key={i}
-              className="size-4 animate-pulse rounded-full bg-slate-200 dark:bg-slate-800"
+              className="size-3.5 animate-pulse rounded-full bg-stone-200 dark:bg-stone-800"
             />
           ))}
         </div>
-        <div className="h-4 w-3/4 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
-        <div className="h-3 w-full animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
-        <div className="h-3 w-2/3 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
-        <div className="mt-2 h-9 w-full animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
+        <div className="h-4 w-3/4 animate-pulse rounded bg-stone-200 dark:bg-stone-800" />
+        <div className="h-3 w-full animate-pulse rounded bg-stone-200 dark:bg-stone-800" />
+        <div className="h-3 w-2/3 animate-pulse rounded bg-stone-200 dark:bg-stone-800" />
+        <div className="mt-2 h-px w-full bg-stone-100 dark:bg-stone-800" />
+        <div className="mt-3 h-3 w-1/3 animate-pulse rounded bg-stone-200 dark:bg-stone-800" />
       </div>
     </div>
   )

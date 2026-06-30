@@ -1,6 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
-import { apiClient, createProduct, type CreateProductInput } from "@/lib/apiClient"
+import {
+  apiClient,
+  createProduct,
+  type CreateProductInput,
+} from "@/lib/apiClient"
 
 export interface Product {
   id: number

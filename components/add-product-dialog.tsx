@@ -23,7 +23,9 @@ export function AddProductDialog({ onClose }: { onClose: () => void }) {
   }, [onClose])
 
   const titleError = touched && !title.trim() ? "Title is required" : null
-  const apiError = createProduct.isError ? getApiErrorDetail(createProduct.error) : null
+  const apiError = createProduct.isError
+    ? getApiErrorDetail(createProduct.error)
+    : null
   const pending = createProduct.isPending
 
   function onSubmit(event: React.FormEvent) {
@@ -36,26 +38,28 @@ export function AddProductDialog({ onClose }: { onClose: () => void }) {
         description: description.trim() || undefined,
         image_url: imageUrl.trim() || undefined,
       },
-      { onSuccess: () => onClose() },
+      { onSuccess: () => onClose() }
     )
   }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div
-        className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"
+        className="absolute inset-0 bg-stone-900/50 backdrop-blur-sm"
         onClick={onClose}
         aria-hidden="true"
       />
 
-      <div className="relative z-10 w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-800 dark:bg-slate-900">
+      <div className="animate-fade-up relative z-10 w-full max-w-md rounded-2xl border border-stone-200 bg-white p-6 shadow-2xl dark:border-stone-800 dark:bg-stone-900">
         <div className="mb-5 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-50">Add a product</h2>
+          <h2 className="text-lg font-semibold text-stone-900 dark:text-stone-50">
+            Add a product
+          </h2>
           <button
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800"
+            className="rounded-lg p-1.5 text-stone-400 transition-colors hover:bg-stone-100 hover:text-stone-600 dark:hover:bg-stone-800"
           >
             <X className="size-5" />
           </button>
@@ -65,7 +69,7 @@ export function AddProductDialog({ onClose }: { onClose: () => void }) {
           <div>
             <label
               htmlFor="product-title"
-              className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300"
+              className="mb-1.5 block text-sm font-medium text-stone-700 dark:text-stone-300"
             >
               Title
             </label>
@@ -74,19 +78,22 @@ export function AddProductDialog({ onClose }: { onClose: () => void }) {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g. Wireless Mouse"
-              className="h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-600/15 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
+              className="h-11 w-full rounded-lg border border-stone-200 bg-white px-3 text-sm text-stone-900 transition outline-none placeholder:text-stone-400 focus:border-stone-900 focus:ring-4 focus:ring-stone-900/10 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-100 dark:focus:border-white dark:focus:ring-white/10"
             />
             {titleError && (
-              <p className="mt-1.5 pl-1 text-xs font-medium text-red-600">{titleError}</p>
+              <p className="mt-1.5 pl-1 text-xs font-medium text-red-600">
+                {titleError}
+              </p>
             )}
           </div>
 
           <div>
             <label
               htmlFor="product-description"
-              className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300"
+              className="mb-1.5 block text-sm font-medium text-stone-700 dark:text-stone-300"
             >
-              Description <span className="font-normal text-slate-400">(optional)</span>
+              Description{" "}
+              <span className="font-normal text-stone-400">(optional)</span>
             </label>
             <textarea
               id="product-description"
@@ -94,23 +101,24 @@ export function AddProductDialog({ onClose }: { onClose: () => void }) {
               onChange={(e) => setDescription(e.target.value)}
               rows={3}
               placeholder="Short description…"
-              className="w-full resize-y rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-600/15 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
+              className="w-full resize-y rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-900 transition outline-none placeholder:text-stone-400 focus:border-stone-900 focus:ring-4 focus:ring-stone-900/10 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-100 dark:focus:border-white dark:focus:ring-white/10"
             />
           </div>
 
           <div>
             <label
               htmlFor="product-image"
-              className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300"
+              className="mb-1.5 block text-sm font-medium text-stone-700 dark:text-stone-300"
             >
-              Image URL <span className="font-normal text-slate-400">(optional)</span>
+              Image URL{" "}
+              <span className="font-normal text-stone-400">(optional)</span>
             </label>
             <input
               id="product-image"
               value={imageUrl}
               onChange={(e) => setImageUrl(e.target.value)}
               placeholder="https://…"
-              className="h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-600/15 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
+              className="h-11 w-full rounded-lg border border-stone-200 bg-white px-3 text-sm text-stone-900 transition outline-none placeholder:text-stone-400 focus:border-stone-900 focus:ring-4 focus:ring-stone-900/10 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-100 dark:focus:border-white dark:focus:ring-white/10"
             />
           </div>
 
@@ -127,7 +135,7 @@ export function AddProductDialog({ onClose }: { onClose: () => void }) {
             <button
               type="button"
               onClick={onClose}
-              className="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+              className="rounded-lg px-4 py-2 text-sm font-medium text-stone-600 transition-colors hover:bg-stone-100 dark:text-stone-300 dark:hover:bg-stone-800"
             >
               Cancel
             </button>
@@ -135,9 +143,9 @@ export function AddProductDialog({ onClose }: { onClose: () => void }) {
               type="submit"
               disabled={pending}
               className={cn(
-                "inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-indigo-500",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600/40 focus-visible:ring-offset-2",
-                "disabled:cursor-not-allowed disabled:opacity-70",
+                "inline-flex items-center gap-1.5 rounded-lg bg-stone-900 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-stone-800",
+                "focus-visible:ring-2 focus-visible:ring-stone-900/20 focus-visible:ring-offset-2 focus-visible:outline-none",
+                "disabled:cursor-not-allowed disabled:opacity-70 dark:bg-white dark:text-stone-900 dark:hover:bg-stone-200"
               )}
             >
               {pending && <Loader2 className="size-4 animate-spin" />}
