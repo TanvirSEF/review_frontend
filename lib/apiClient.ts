@@ -76,6 +76,23 @@ export async function createProduct(input: CreateProductInput): Promise<void> {
   await apiClient.post("/api/products", input)
 }
 
+export interface UpdateProductInput {
+  title?: string
+  description?: string
+  image_url?: string
+}
+
+export async function updateProduct(
+  id: number,
+  input: UpdateProductInput
+): Promise<void> {
+  await apiClient.put(`/api/products/${id}`, input)
+}
+
+export async function deleteProduct(id: number): Promise<void> {
+  await apiClient.delete(`/api/products/${id}`)
+}
+
 interface JwtPayload {
   sub?: string
   exp?: number

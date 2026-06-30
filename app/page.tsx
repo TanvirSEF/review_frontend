@@ -4,17 +4,27 @@ import * as React from "react"
 import { PackageSearch, Plus, RefreshCw } from "lucide-react"
 
 import { AddProductDialog } from "@/components/add-product-dialog"
+import { ConfirmDialog } from "@/components/ConfirmDialog"
+import { EditProductDialog } from "@/components/EditProductDialog"
 import { ProductCard, ProductCardSkeleton } from "@/components/ProductCard"
 import { getApiErrorDetail } from "@/lib/apiClient"
 import { useAuth } from "@/hooks/useAuth"
-import { useProducts } from "@/hooks/useProducts"
+import { useDeleteProduct, useProducts } from "@/hooks/useProducts"
+import type { Product } from "@/hooks/useProducts"
 
 const SKELETON_COUNT = 6
 
 export default function HomePage() {
   const { data: products, isLoading, isError, error, refetch } = useProducts()
   const { user, isReady } = useAuth()
+  const deleteProduct = useDeleteProduct()
   const [dialogOpen, setDialogOpen] = React.useState(false)
+  const [editingProduct, setEditingProduct] = React.useState<Product | null>(
+    null
+  )
+  const [deletingProduct, setDeletingProduct] = React.useState<Product | null>(
+    null
+  )
 
   const isAdmin = isReady && !!user?.is_admin
 
@@ -117,12 +127,43 @@ export default function HomePage() {
           {!isLoading &&
             !isError &&
             products?.map((product, i) => (
-              <ProductCard key={product.id} product={product} index={i} />
+              <ProductCard
+                key={product.id}
+                product={product}
+                index={i}
+                isAdmin={isAdmin}
+                onEdit={setEditingProduct}
+                onDelete={setDeletingProduct}
+              />
             ))}
         </div>
       </section>
 
       {dialogOpen && <AddProductDialog onClose={() => setDialogOpen(false)} />}
+
+      {editingProduct && (
+        <EditProductDialog
+          product={editingProduct}
+          onClose={() => setEditingProduct(null)}
+        />
+      )}
+
+      {deletingProduct && (
+        <ConfirmDialog
+          title="Delete product"
+          message={`Delete "${deletingProduct.title}"? This also removes all of its reviews.`}
+          confirmLabel="Delete"
+          cancelLabel="Cancel"
+          danger
+          pending={deleteProduct.isPending}
+          onConfirm={() =>
+            deleteProduct.mutate(deletingProduct.id, {
+              onSuccess: () => setDeletingProduct(null),
+            })
+          }
+          onClose={() => setDeletingProduct(null)}
+        />
+      )}
     </main>
   )
 }

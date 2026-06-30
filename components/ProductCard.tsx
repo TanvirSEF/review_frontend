@@ -1,7 +1,13 @@
 import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowRight, Image as ImageIcon, Star } from "lucide-react"
+import {
+  ArrowRight,
+  Image as ImageIcon,
+  Pencil,
+  Star,
+  Trash2,
+} from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import type { Product } from "@/hooks/useProducts"
@@ -37,9 +43,15 @@ function RatingStars({
 export function ProductCard({
   product,
   index = 0,
+  isAdmin = false,
+  onEdit,
+  onDelete,
 }: {
   product: Product
   index?: number
+  isAdmin?: boolean
+  onEdit?: (product: Product) => void
+  onDelete?: (product: Product) => void
 }) {
   const { id, title, description, image_url, average_rating, review_count } =
     product
@@ -47,10 +59,9 @@ export function ProductCard({
   const showImage = Boolean(image_url) && !imgError
 
   return (
-    <Link
-      href={`/products/${id}`}
+    <div
       style={{ animationDelay: `${Math.min(index, 8) * 60}ms` }}
-      className="group animate-fade-up flex flex-col overflow-hidden rounded-2xl border border-stone-200/80 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-stone-300 hover:shadow-xl hover:shadow-stone-900/5 focus-visible:ring-2 focus-visible:ring-stone-900/15 focus-visible:ring-offset-2 focus-visible:outline-none dark:border-stone-800 dark:bg-stone-900 dark:hover:border-stone-700 dark:focus-visible:ring-white/20"
+      className="group animate-fade-up relative flex flex-col overflow-hidden rounded-2xl border border-stone-200/80 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-stone-300 hover:shadow-xl hover:shadow-stone-900/5 dark:border-stone-800 dark:bg-stone-900 dark:hover:border-stone-700"
     >
       <div className="relative aspect-4/3 w-full overflow-hidden bg-stone-100 dark:bg-stone-800">
         {showImage ? (
@@ -66,6 +77,27 @@ export function ProductCard({
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-stone-100 to-stone-200 dark:from-stone-800 dark:to-stone-700">
             <ImageIcon className="size-12 text-stone-300 dark:text-stone-600" />
+          </div>
+        )}
+
+        {isAdmin && (
+          <div className="absolute top-3 right-3 z-10 flex gap-1.5 opacity-0 transition-opacity duration-200 group-hover:opacity-100 focus-within:opacity-100">
+            <button
+              type="button"
+              onClick={() => onEdit?.(product)}
+              aria-label={`Edit ${title}`}
+              className="flex size-8 items-center justify-center rounded-lg bg-white/90 text-stone-700 shadow-sm backdrop-blur transition-colors hover:bg-white hover:text-stone-900 dark:bg-stone-950/90 dark:text-stone-200 dark:hover:bg-stone-950"
+            >
+              <Pencil className="size-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => onDelete?.(product)}
+              aria-label={`Delete ${title}`}
+              className="flex size-8 items-center justify-center rounded-lg bg-white/90 text-stone-700 shadow-sm backdrop-blur transition-colors hover:bg-red-50 hover:text-red-600 dark:bg-stone-950/90 dark:text-stone-200 dark:hover:bg-red-950/60 dark:hover:text-red-400"
+            >
+              <Trash2 className="size-4" />
+            </button>
           </div>
         )}
       </div>
@@ -96,7 +128,13 @@ export function ProductCard({
           </span>
         </div>
       </div>
-    </Link>
+
+      <Link
+        href={`/products/${id}`}
+        aria-label={`View ${title}`}
+        className="absolute inset-0 z-0 focus-visible:ring-2 focus-visible:ring-stone-900/15 focus-visible:ring-offset-2 focus-visible:outline-none dark:focus-visible:ring-white/20"
+      />
+    </div>
   )
 }
 
