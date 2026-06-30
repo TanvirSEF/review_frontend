@@ -63,7 +63,7 @@ export function ProductCard({
       style={{ animationDelay: `${Math.min(index, 8) * 60}ms` }}
       className="group animate-fade-up relative flex flex-col overflow-hidden rounded-2xl border border-stone-200/80 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-stone-300 hover:shadow-xl hover:shadow-stone-900/5 dark:border-stone-800 dark:bg-stone-900 dark:hover:border-stone-700"
     >
-      <div className="relative aspect-4/3 w-full overflow-hidden bg-stone-100 dark:bg-stone-800">
+      <div className="relative aspect-square w-full overflow-hidden bg-stone-100 dark:bg-stone-800">
         {showImage ? (
           <Image
             src={image_url as string}
@@ -141,7 +141,7 @@ export function ProductCard({
 export function ProductCardSkeleton() {
   return (
     <div className="flex flex-col overflow-hidden rounded-2xl border border-stone-200/80 bg-white dark:border-stone-800 dark:bg-stone-900">
-      <div className="aspect-4/3 w-full animate-pulse bg-stone-200 dark:bg-stone-800" />
+      <div className="aspect-square w-full animate-pulse bg-stone-200 dark:bg-stone-800" />
       <div className="flex flex-col gap-3 p-5">
         <div className="flex gap-1">
           {Array.from({ length: 5 }).map((_, i) => (
